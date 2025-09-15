@@ -235,5 +235,3 @@ class ApplicationService {
 }
 
 export default new ApplicationService();
-
-export default new ApplicationService();

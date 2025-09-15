@@ -248,5 +248,3 @@ class CandidateService {
 }
 
 export default new CandidateService();
-
-export default new CandidateService();
