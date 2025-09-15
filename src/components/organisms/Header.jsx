@@ -1,6 +1,28 @@
+import { useContext } from "react";
 import ApperIcon from "@/components/ApperIcon";
 import RoleSwitch from "@/components/molecules/RoleSwitch";
 import { useRole } from "@/hooks/useRole";
+import { AuthContext } from "../../App";
+
+const LogoutButton = () => {
+  const { logout } = useContext(AuthContext);
+  
+  const handleLogout = async () => {
+    if (confirm("Are you sure you want to logout?")) {
+      await logout();
+    }
+  };
+
+  return (
+    <button 
+      onClick={handleLogout}
+      className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+      title="Logout"
+    >
+      <ApperIcon name="LogOut" className="w-5 h-5" />
+    </button>
+  );
+};
 
 const Header = () => {
   const { currentRole } = useRole();
@@ -22,14 +44,14 @@ const Header = () => {
 
         <div className="flex items-center gap-4">
           <RoleSwitch />
-          
-          <div className="flex items-center gap-2">
+<div className="flex items-center gap-2">
             <button className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors">
               <ApperIcon name="Bell" className="w-5 h-5" />
             </button>
             <button className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors">
               <ApperIcon name="Settings" className="w-5 h-5" />
             </button>
+            <LogoutButton />
           </div>
         </div>
       </div>
