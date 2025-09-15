@@ -11,6 +11,7 @@ const candidateNavItems = [
     { name: "Saved Jobs", path: "/saved-jobs", icon: "Heart" },
     { name: "My Applications", path: "/applications", icon: "FileText" },
     { name: "Messages", path: "/messages", icon: "MessageSquare" },
+    { name: "Contact Us", path: "/contact-us", icon: "Mail" },
     { name: "Profile", path: "/profile", icon: "User" }
   ];
 
@@ -21,6 +22,7 @@ const recruiterNavItems = [
     { name: "Saved Candidates", path: "/saved-candidates", icon: "Heart" },
     { name: "Applications", path: "/applications", icon: "FileText" },
     { name: "Messages", path: "/messages", icon: "MessageSquare" },
+    { name: "Contact Us", path: "/contact-us", icon: "Mail" },
     { name: "Profile", path: "/profile", icon: "Building2" }
   ];
 
