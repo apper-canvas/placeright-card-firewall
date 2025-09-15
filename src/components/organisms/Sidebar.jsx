@@ -81,9 +81,13 @@ const recruiterNavItems = [
               <p className="text-sm text-gray-600 mb-3">
                 Contact our support team for assistance with your {currentRole === "candidate" ? "job search" : "hiring needs"}.
               </p>
-              <button className="text-sm text-accent font-medium hover:underline">
+<NavLink
+                to="/contact-us"
+                className="text-sm text-accent font-medium hover:underline transition-colors"
+                onClick={onClose}
+              >
                 Get Support
-              </button>
+              </NavLink>
             </div>
           </div>
         </div>

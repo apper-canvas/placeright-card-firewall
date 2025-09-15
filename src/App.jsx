@@ -14,13 +14,13 @@ import Messages from "@/components/pages/Messages";
 import Profile from "@/components/pages/Profile";
 import SavedJobs from "@/components/pages/SavedJobs";
 import SavedCandidates from "@/components/pages/SavedCandidates";
+import ContactUs from "@/components/pages/ContactUs";
 import Login from '@/components/pages/Login';
 import Signup from '@/components/pages/Signup';
 import Callback from '@/components/pages/Callback';
 import ErrorPage from '@/components/pages/ErrorPage';
 import ResetPassword from '@/components/pages/ResetPassword';
 import PromptPassword from '@/components/pages/PromptPassword';
-
 // Create auth context
 export const AuthContext = createContext(null);
 
@@ -144,6 +144,7 @@ function AppContent() {
             <Route path="applications" element={<Applications />} />
             <Route path="messages" element={<Messages />} />
             <Route path="profile" element={<Profile />} />
+<Route path="contact-us" element={<ContactUs />} />
           </Route>
         </Routes>
         <ToastContainer
