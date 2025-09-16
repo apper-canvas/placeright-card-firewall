@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import React from "react";
 import ApperIcon from "@/components/ApperIcon";
 import { useRole } from "@/hooks/useRole";
 
@@ -10,14 +11,14 @@ const candidateNavItems = [
     { name: "Job Board", path: "/jobs", icon: "Search" },
     { name: "Saved Jobs", path: "/saved-jobs", icon: "Heart" },
     { name: "My Applications", path: "/applications", icon: "FileText" },
-    { name: "Messages", path: "/messages", icon: "MessageSquare" },
+{ name: "Messages", path: "/messages", icon: "MessageSquare" },
     { name: "Contact Us", path: "/contact-us", icon: "Mail" },
-    { name: "Profile", path: "/profile", icon: "User" }
+    { name: "Profile", path: "/profile", icon: "User" },
+    { name: "Tasks", path: "/tasks", icon: "List" },
   ];
-
 const recruiterNavItems = [
     { name: "Dashboard", path: "/", icon: "LayoutDashboard" },
-    { name: "Job Postings", path: "/jobs", icon: "Briefcase" },
+{ name: "Job Postings", path: "/jobs", icon: "Briefcase" },
     { name: "Candidates", path: "/candidates", icon: "Users" },
     { name: "Saved Candidates", path: "/saved-candidates", icon: "Heart" },
     { name: "Applications", path: "/applications", icon: "FileText" },

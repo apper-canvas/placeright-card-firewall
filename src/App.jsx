@@ -1,26 +1,25 @@
-import { createContext, useEffect, useState } from 'react';
-import { Routes, Route, useNavigate, BrowserRouter } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { createContext, useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
-import { setUser, clearUser } from './store/userSlice';
-import { RoleProvider } from "@/hooks/useRole";
-
-import Layout from "@/components/organisms/Layout";
-import Dashboard from "@/components/pages/Dashboard";
+import { clearUser, setUser } from "@/store/userSlice";
+import Login from "@/components/pages/Login";
+import Callback from "@/components/pages/Callback";
+import PromptPassword from "@/components/pages/PromptPassword";
+import Profile from "@/components/pages/Profile";
+import Messages from "@/components/pages/Messages";
+import SavedJobs from "@/components/pages/SavedJobs";
 import JobBoard from "@/components/pages/JobBoard";
+import SavedCandidates from "@/components/pages/SavedCandidates";
+import ErrorPage from "@/components/pages/ErrorPage";
+import Signup from "@/components/pages/Signup";
+import ResetPassword from "@/components/pages/ResetPassword";
+import Dashboard from "@/components/pages/Dashboard";
 import Candidates from "@/components/pages/Candidates";
 import Applications from "@/components/pages/Applications";
-import Messages from "@/components/pages/Messages";
-import Profile from "@/components/pages/Profile";
-import SavedJobs from "@/components/pages/SavedJobs";
-import SavedCandidates from "@/components/pages/SavedCandidates";
 import ContactUs from "@/components/pages/ContactUs";
-import Login from '@/components/pages/Login';
-import Signup from '@/components/pages/Signup';
-import Callback from '@/components/pages/Callback';
-import ErrorPage from '@/components/pages/ErrorPage';
-import ResetPassword from '@/components/pages/ResetPassword';
-import PromptPassword from '@/components/pages/PromptPassword';
+import Layout from "@/components/organisms/Layout";
+import { RoleProvider } from "@/hooks/useRole";
 // Create auth context
 export const AuthContext = createContext(null);
 
@@ -135,16 +134,16 @@ function AppContent() {
           <Route path="/error" element={<ErrorPage />} />
           <Route path="/prompt-password/:appId/:emailAddress/:provider" element={<PromptPassword />} />
           <Route path="/reset-password/:appId/:fields" element={<ResetPassword />} />
-          <Route path="/" element={<Layout />}>
+<Route path="/" element={<Layout />}>
             <Route index element={<Dashboard />} />
             <Route path="jobs" element={<JobBoard />} />
             <Route path="saved-jobs" element={<SavedJobs />} />
             <Route path="candidates" element={<Candidates />} />
-            <Route path="saved-candidates" element={<SavedCandidates />} />
+<Route path="saved-candidates" element={<SavedCandidates />} />
             <Route path="applications" element={<Applications />} />
             <Route path="messages" element={<Messages />} />
             <Route path="profile" element={<Profile />} />
-<Route path="contact-us" element={<ContactUs />} />
+            <Route path="contact-us" element={<ContactUs />} />
           </Route>
         </Routes>
         <ToastContainer

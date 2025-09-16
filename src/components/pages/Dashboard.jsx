@@ -10,12 +10,14 @@ import jobService from "@/services/api/jobService";
 import applicationService from "@/services/api/applicationService";
 import candidateService from "@/services/api/candidateService";
 import savedJobsService from "@/services/api/savedJobsService";
+import taskService from "@/services/api/taskService";
 const Dashboard = () => {
   const { currentRole } = useRole();
   const [dashboardData, setDashboardData] = useState({
     stats: {},
-    recentJobs: [],
-    recentApplications: []
+recentJobs: [],
+    recentApplications: [],
+    recentTasks: []
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -26,14 +28,16 @@ const Dashboard = () => {
       setLoading(true);
 
 if (currentRole === "candidate") {
-        const [jobs, applications, savedJobsCount] = await Promise.all([
+        const [jobs, applications, savedJobsCount, taskStats] = await Promise.all([
           jobService.getAll(),
           applicationService.getAll(),
-          savedJobsService.getCount()
+          savedJobsService.getCount(),
+          taskService.getStats()
         ]);
 
         const recentJobs = jobs.slice(0, 3);
         const myApplications = applications.slice(0, 3);
+        const recentTasks = (await taskService.getAll()).slice(0, 3);
 
         setDashboardData({
           stats: {
@@ -41,30 +45,40 @@ if (currentRole === "candidate") {
             savedJobs: savedJobsCount,
             myApplications: applications.length,
             interviews: applications.filter(a => a.status === "Interview").length,
-            offers: applications.filter(a => a.status === "Offer").length
+            offers: applications.filter(a => a.status === "Offer").length,
+            totalTasks: taskStats.total,
+            pendingTasks: taskStats.new + taskStats.inProgress,
+            completedTasks: taskStats.completed
           },
           recentJobs,
-          recentApplications: myApplications
+          recentApplications: myApplications,
+          recentTasks
         });
       } else {
-        const [jobs, applications, candidates] = await Promise.all([
+        const [jobs, applications, candidates, taskStats] = await Promise.all([
           jobService.getAll(),
           applicationService.getAll(),
-          candidateService.getAll()
+          candidateService.getAll(),
+          taskService.getStats()
         ]);
 
         const myJobs = jobs.slice(0, 3);
         const recentApplications = applications.slice(0, 3);
+        const recentTasks = (await taskService.getAll()).slice(0, 3);
 
         setDashboardData({
           stats: {
             activeJobs: jobs.filter(j => j.status === "Active").length,
             totalApplications: applications.length,
             candidates: candidates.length,
-            interviews: applications.filter(a => a.status === "Interview").length
+            interviews: applications.filter(a => a.status === "Interview").length,
+            totalTasks: taskStats.total,
+            pendingTasks: taskStats.new + taskStats.inProgress,
+            completedTasks: taskStats.completed
           },
           recentJobs: myJobs,
-          recentApplications
+          recentApplications,
+          recentTasks
         });
       }
     } catch (err) {
@@ -110,12 +124,13 @@ if (currentRole === "candidate") {
               </div>
               <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-primary/20 rounded-lg flex items-center justify-center">
                 <ApperIcon 
-                  name={
+name={
                     key.includes("Job") || key.includes("job") ? "Briefcase" :
                     key.includes("Application") || key.includes("application") ? "FileText" :
                     key.includes("Interview") || key.includes("interview") ? "Users" :
                     key.includes("Candidate") || key.includes("candidate") ? "User" :
                     key.includes("Offer") || key.includes("offer") ? "Gift" :
+                    key.includes("Task") || key.includes("task") ? "List" :
                     "TrendingUp"
                   }
                   className="w-6 h-6 text-primary" 
@@ -127,7 +142,7 @@ if (currentRole === "candidate") {
       </div>
 
 {/* Recent Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Jobs */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
@@ -146,8 +161,8 @@ if (currentRole === "candidate") {
                   <h3 className="font-medium text-gray-900 mb-1">{job.title}</h3>
                   <p className="text-sm text-primary mb-2">{job.company}</p>
                   <div className="flex items-center justify-between text-sm text-gray-500">
-                    <span>${job.salaryRange.min.toLocaleString()} - ${job.salaryRange.max.toLocaleString()}</span>
-                    <span>{job.applications.length} applications</span>
+                    <span>${job.salaryRange?.min?.toLocaleString()} - ${job.salaryRange?.max?.toLocaleString()}</span>
+                    <span>{job.applications?.length || 0} applications</span>
                   </div>
                 </div>
               ))}
@@ -201,6 +216,48 @@ if (currentRole === "candidate") {
               icon="FileText"
               title="No recent applications"
               message={currentRole === "candidate" ? "Your job applications will appear here" : "New candidate applications will appear here"}
+            />
+          )}
+        </div>
+
+        {/* Recent Tasks */}
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">Recent Tasks</h2>
+            <button className="text-sm text-primary font-medium hover:underline">
+              View All
+            </button>
+          </div>
+
+          {dashboardData.recentTasks.length > 0 ? (
+            <div className="space-y-4">
+              {dashboardData.recentTasks.map((task) => (
+                <div key={task.Id} className="border border-gray-100 rounded-lg p-4 hover:shadow-sm transition-shadow">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-medium text-gray-900 text-sm">{task.title_c}</h3>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      task.status_c === "New" ? "bg-blue-100 text-blue-800" :
+                      task.status_c === "In Progress" ? "bg-yellow-100 text-yellow-800" :
+                      task.status_c === "Completed" ? "bg-green-100 text-green-800" :
+                      task.status_c === "Blocked" ? "bg-red-100 text-red-800" :
+                      "bg-gray-100 text-gray-800"
+                    }`}>
+                      {task.status_c}
+                    </span>
+                  </div>
+                  {task.due_date_c && (
+                    <p className="text-sm text-gray-600">
+                      Due: {new Date(task.due_date_c).toLocaleDateString()}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <Empty
+              icon="List"
+              title="No recent tasks"
+              message="Your tasks will appear here"
             />
           )}
         </div>
