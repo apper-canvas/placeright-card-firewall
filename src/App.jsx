@@ -18,6 +18,7 @@ import Dashboard from "@/components/pages/Dashboard";
 import Candidates from "@/components/pages/Candidates";
 import Applications from "@/components/pages/Applications";
 import ContactUs from "@/components/pages/ContactUs";
+import Tasks from "@/components/pages/Tasks";
 import Layout from "@/components/organisms/Layout";
 import { RoleProvider } from "@/hooks/useRole";
 // Create auth context
@@ -139,8 +140,9 @@ function AppContent() {
             <Route path="jobs" element={<JobBoard />} />
             <Route path="saved-jobs" element={<SavedJobs />} />
             <Route path="candidates" element={<Candidates />} />
-<Route path="saved-candidates" element={<SavedCandidates />} />
+            <Route path="saved-candidates" element={<SavedCandidates />} />
             <Route path="applications" element={<Applications />} />
+            <Route path="tasks" element={<Tasks />} />
             <Route path="messages" element={<Messages />} />
             <Route path="profile" element={<Profile />} />
             <Route path="contact-us" element={<ContactUs />} />
